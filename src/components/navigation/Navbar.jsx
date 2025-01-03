@@ -6,7 +6,7 @@ const Navbar = () => {
   return (
     <header className="relative container mx-auto px-4 py-8 z-10">
       <nav className="flex justify-between items-center">
-        // The component is used to navigate to landing page.
+        {/* The component is used to navigate to landing page. */}
         <Link href="/" className="flex items-center gap-2">
           <Image
             src="/icons/A-logo.png"
