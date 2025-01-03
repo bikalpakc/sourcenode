@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { BrainCircuit, Share2, Shield, Zap } from "lucide-react";
+
 const HeroSection = () => {
   return (
     <main className="relative z-10">
