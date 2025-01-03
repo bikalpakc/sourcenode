@@ -84,6 +84,36 @@ export async function POST(request) {
   }
 }
 
+// GET: Get a single idea by _id
+export async function GET(request) {
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get("_id");
+
+  if (!id) {
+    return NextResponse.json(
+      { error: "_id is required in query parameters" },
+      { status: 400 }
+    );
+  }
+
+  try {
+    const ideasCollection = await connectToDB();
+    const idea = await ideasCollection.findOne({ _id: new ObjectId(id) });
+
+    if (!idea) {
+      return NextResponse.json({ error: "Idea not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true, idea });
+  } catch (error) {
+    console.error("Error fetching the idea:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
+
 // GET: Get all ideas
 export async function GET_ALL() {
   try {
