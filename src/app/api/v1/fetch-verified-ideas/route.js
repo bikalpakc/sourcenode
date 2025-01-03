@@ -13,29 +13,70 @@ async function connectToDB() {
   return client.db("verified-ideas").collection("messages");
 }
 
-// GET: Get a single idea by _id
-export async function GET(request) {
-  const { searchParams } = new URL(request.url);
-  const id = searchParams.get("_id");
-
-  if (!id) {
-    return NextResponse.json(
-      { error: "_id is required in query parameters" },
-      { status: 400 }
-    );
-  }
-
+// POST: Add a new idea
+export async function POST(request) {
   try {
-    const ideasCollection = await connectToDB();
-    const idea = await ideasCollection.findOne({ _id: new ObjectId(id) });
+    const body = await request.json();
+    const {
+      id,
+      address,
+      timestamp,
+      ideaOwner,
+      contactEmail,
+      ideaName,
+      ideaDescription,
+      category,
+      proofOfConcept,
+      supportingDocuments, // Array of { id, url, type, name }
+      expectedOutcome,
+      currentStage,
+      contributors,
+    } = body;
 
-    if (!idea) {
-      return NextResponse.json({ error: "Idea not found" }, { status: 404 });
+    if (
+      !id ||
+      !address ||
+      !timestamp ||
+      !ideaOwner ||
+      !contactEmail ||
+      !ideaName ||
+      !ideaDescription ||
+      !category ||
+      !proofOfConcept ||
+      !supportingDocuments ||
+      !Array.isArray(supportingDocuments) ||
+      !expectedOutcome ||
+      !currentStage
+    ) {
+      return NextResponse.json(
+        { error: "Some of the fields are missing !" },
+        { status: 400 }
+      );
     }
 
-    return NextResponse.json({ success: true, idea });
+    const ideasCollection = await connectToDB();
+
+    // Save the message to MongoDB
+    const data = await ideasCollection.insertOne({
+      id,
+      address,
+      timestamp,
+      ideaOwner,
+      contactEmail,
+      ideaName,
+      ideaDescription,
+      category,
+      proofOfConcept,
+      supportingDocuments, // Array of { id, url, type, name }
+      expectedOutcome,
+      currentStage,
+      contributors,
+      createdAt: new Date(),
+    });
+
+    return NextResponse.json({ success: true, data });
   } catch (error) {
-    console.error("Error fetching the idea:", error);
+    console.error("Error saving the data:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }
