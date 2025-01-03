@@ -40,7 +40,7 @@ const Navbar = () => {
                   "hidden md:flex bg-[#034ae2] text-white hover:bg-[#0452fb]",
               })}
             >
-              Get Started
+              Sign Up
             </Link>
           </div>
         </div>
