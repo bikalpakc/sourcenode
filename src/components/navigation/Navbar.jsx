@@ -53,8 +53,8 @@ const Navbar = async ({ showConnectWallet = false }) => {
             </>
           ) : (
             <>
-              <UserButton />
               {showConnectWallet && <ConnectWallet />}
+              <UserButton />
             </>
           )}
         </div>

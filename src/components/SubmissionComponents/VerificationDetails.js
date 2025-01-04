@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";//importing the react hooks
-import { useDispatch, useSelector } from "react-redux";//importing the react-redux hooks to use the store
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   updateField,
   addSupportingDocument,
   removeSupportingDocument,
-  updateSupportingDocument,
 } from "../../store/formSlice";
+import { useFileUpload } from "@/hooks/useFileUpload"; // Import your custom hook for Cloudinary upload
 
 export default function VerificationDetails({ nextStep, prevStep }) {
   const dispatch = useDispatch();
@@ -13,47 +13,49 @@ export default function VerificationDetails({ nextStep, prevStep }) {
     (state) => state.form
   );
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const { uploadFile, uploadProgress } = useFileUpload(); // Use the hook
 
   useEffect(() => {
     // Cleanup function to revoke blob URLs when component unmounts
     return () => {
-      supportingDocuments.forEach((doc) => {
-        if (doc.url.startsWith("blob:")) {
-          URL.revokeObjectURL(doc.url);
-        }
+      selectedFiles.forEach((file) => {
+        URL.revokeObjectURL(file.url);
       });
     };
-  }, [supportingDocuments]);
+  }, [selectedFiles]);
 
   const handleChange = (e) => {
     dispatch(updateField({ field: e.target.name, value: e.target.value }));
   };
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const files = Array.from(e.target.files);
 
-    files.forEach((file) => {
-      // Create blob URL for the file
-      const blobUrl = URL.createObjectURL(file);
+    for (const file of files) {
+      try {
+        // Upload file to Cloudinary
+        const uploadedFile = await uploadFile(file);
 
-      // Get file extension
-      const fileType = file.name.split(".").pop().toLowerCase();
-
-      // Dispatch action to add new document
-      dispatch(
-        addSupportingDocument({
-          url: blobUrl,
-          type: fileType,
-          name: file.name,
-        })
-      );
-    });
-
-    setSelectedFiles((prev) => [...prev, ...files]);
+        if (uploadedFile) {
+          // Dispatch action to add new document
+          dispatch(
+            addSupportingDocument({
+              url: uploadedFile.url,
+              type: uploadedFile.type,
+              name: uploadedFile.name,
+            })
+          );
+          setSelectedFiles((prev) => [...prev, file]);
+        }
+      } catch (error) {
+        console.error("File upload error:", error.message);
+      }
+    }
   };
 
   const handleRemoveFile = (documentId) => {
     dispatch(removeSupportingDocument(documentId));
+    setSelectedFiles((prev) => prev.filter((file) => file.id !== documentId));
   };
 
   const handleSubmit = (e) => {
@@ -97,6 +99,11 @@ export default function VerificationDetails({ nextStep, prevStep }) {
     file:bg-blue-600 file:text-white
     hover:file:bg-blue-700"
         />
+        {uploadProgress > 0 && (
+          <div className="mt-2 text-sm text-blue-500">
+            Uploading... {uploadProgress}%
+          </div>
+        )}
         {supportingDocuments.length > 0 && (
           <div className="mt-4 space-y-2">
             {supportingDocuments.map((doc) => (
@@ -122,13 +129,13 @@ export default function VerificationDetails({ nextStep, prevStep }) {
       <div className="flex justify-between">
         <button
           type="button"
-          onClick={prevStep}//button to take to the previous step
+          onClick={prevStep}
           className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
         >
           Previous
         </button>
         <button
-          type="submit"//the button type is submit
+          type="submit"
           className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
         >
           Next
