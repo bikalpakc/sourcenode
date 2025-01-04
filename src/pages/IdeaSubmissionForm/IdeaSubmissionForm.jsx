@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import BasicDetails from "@/components/SubmissionComponents/BasicDetails";
 import GoalsAndStage from "@/components/SubmissionComponents/GoalsAndStage";
-import ConnectWallet from "@/components/SubmissionComponents/ConnectWallet";
 import VerificationDetails from "@/components/SubmissionComponents/VerificationDetails";
 import UserDetails from "@/components/SubmissionComponents/UserDetails";
 import Summary from "@/components/SubmissionComponents/Summary";
