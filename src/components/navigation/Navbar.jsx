@@ -2,8 +2,8 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
-
-const Navbar = () => {
+import ConnectWallet from "./ConnectWallet";
+const Navbar = ({ showConnectWallet }) => {
   return (
     <header className="relative container mx-auto px-4 py-8 z-10">
       <nav className="flex justify-between items-center">
@@ -41,6 +41,7 @@ const Navbar = () => {
             >
               Sign Up
             </Link>
+            {showConnectWallet && <ConnectWallet />}
           </div>
         </div>
       </nav>
