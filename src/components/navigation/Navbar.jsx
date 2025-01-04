@@ -5,8 +5,9 @@ import { buttonVariants } from "@/components/ui/button";
 import ConnectWallet from "./ConnectWallet";
 import { UserButton } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
-
-const Navbar = async ({ showConnectWallet = false }) => {
+import { FaPlus } from "react-icons/fa6";
+import { MdKeyboardBackspace } from "react-icons/md";
+const Navbar = async ({ showConnectWallet = false, create = true }) => {
   const user = await currentUser();
 
   return (
@@ -53,6 +54,24 @@ const Navbar = async ({ showConnectWallet = false }) => {
             </>
           ) : (
             <>
+              {user &&
+                (create ? (
+                  <Link
+                    href="/create-idea"
+                    className="flex flex-row gap-x-2 items-center hover:text-blue-500"
+                  >
+                    <FaPlus />
+                    Create
+                  </Link>
+                ) : (
+                  <Link
+                    href="/home"
+                    className="flex flex-row gap-x-2 items-center hover:text-blue-500"
+                  >
+                    <MdKeyboardBackspace />
+                    Back
+                  </Link>
+                ))}
               {showConnectWallet && <ConnectWallet />}
               <UserButton />
             </>
