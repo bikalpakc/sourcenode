@@ -3,6 +3,8 @@ import "@/styles/globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { Poppins } from "next/font/google";
+import { WalletProvider } from "@/contexts/WalletProvider";
+import { Toaster } from "react-hot-toast";
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   subsets: ["latin"],
@@ -23,7 +25,19 @@ export default function RootLayout({ children }) {
         )}
       >
         <ClerkProvider appearance={{ baseTheme: dark }}>
-          {children}
+          <WalletProvider>
+            {children}
+            <Toaster
+              position="bottom-right"
+              toastOptions={{
+                duration: 3000,
+                style: {
+                  background: "#333",
+                  color: "#fff",
+                },
+              }}
+            />
+          </WalletProvider>
         </ClerkProvider>
       </body>
     </html>
