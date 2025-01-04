@@ -119,7 +119,6 @@ export const useContract = () => {
 
         const contract = await getContract();
 
-        // Convert supporting documents to array of URLs
         const supportingDocsUrls = formData.supportingDocuments.map(
           (doc) => doc.url
         );
@@ -132,6 +131,7 @@ export const useContract = () => {
           formData.ideaCategory,
           formData.proofOfConcept,
           supportingDocsUrls,
+          formData.expectedOutcome, // Add this missing parameter
           formData.currentStage,
           formData.contributors || []
         );

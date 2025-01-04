@@ -7,7 +7,7 @@ export default function Layout({ children }) {
     <>
       {" "}
       <Provider store={store}>
-        <div className="h-full  text-white flex items-center justify-center p-4">
+        <div className=" text-white flex  p-4">
           <div className="w-full max-w-4xl bg-gray-800 rounded-lg shadow-xl p-8">
             {children}
           </div>

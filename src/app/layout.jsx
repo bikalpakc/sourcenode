@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import "@/styles/globals.css";
+import "@/style/globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { Poppins } from "next/font/google";

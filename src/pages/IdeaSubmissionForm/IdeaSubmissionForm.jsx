@@ -67,7 +67,7 @@ export default function IdeaSubmissionForm() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="w-full space-y-8">
       <h1 className="text-3xl font-bold text-center">Idea Submission Form</h1>
       <div className="w-full bg-gray-700 rounded-full h-2.5">
         <div

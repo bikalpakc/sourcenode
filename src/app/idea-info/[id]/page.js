@@ -13,42 +13,22 @@ import {
   Link,
   Download,
 } from "lucide-react";
-
-
+import { useContract } from "@/hooks/useContract";
+import { useParams } from "next/navigation";
+import { useEffect } from "react";
 const IdeaDetailsPage = () => {
-  if (!ideaData) return <p>Loading...</p>;
+  const params = useParams();
+  const { ideaData, isLoading, fetchIdeaByUniqueId } = useContract();
 
-  const ideaData = {
-    id: "1234",
-    address: "0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
-    timestamp: "12/28/2024, 5:09:47 PM",
-    ideaOwner: "John Doe",
-    contactEmail: "john@example.com",
-    ideaName: "Decentralized Learning Platform",
-    ideaDescription:
-      "A blockchain-based platform that revolutionizes online education through decentralized content distribution and verification.",
-    category: "Education",
-    proofOfConcept: "https://github.com/example/poc",
-    supportingDocuments: [
-      {
-        id: 1,
-        name: "Technical Whitepaper",
-        type: "pdf",
-        url: "/docs/whitepaper.pdf",
-      },
-      {
-        id: 2,
-        name: "Market Analysis",
-        type: "pdf",
-        url: "/docs/analysis.pdf",
-      },
-    ],
-    expectedOutcome:
-      "Create a self-sustaining educational ecosystem that rewards content creators and learners while ensuring content quality and authenticity.",
-    currentStage: "Under Review",
-    contributors: ["Alice Smith", "Bob Johnson", "Carol Williams"],
-    createdAt: "12/28/2024, 5:09:47 PM",
-  };
+  useEffect(() => {
+    if (params.id) {
+      fetchIdeaByUniqueId(params.id);
+    }
+  }, [params.id, fetchIdeaByUniqueId]);
+
+  if (isLoading || !ideaData) {
+    return <div className="min-h-screen bg-gray-900 p-8">Loading...</div>;
+  }
 
   const InfoRow = ({ icon: Icon, label, value }) => (
     <div className="flex items-start space-x-3 py-3">
@@ -61,7 +41,7 @@ const IdeaDetailsPage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-900 p-8">
+    <div className=" bg-gray-900 p-8">
       <div className="max-w-6xl mx-auto">
         {/* Header Section */}
         <div className="mb-8">
@@ -91,12 +71,12 @@ const IdeaDetailsPage = () => {
               <InfoRow
                 icon={User}
                 label="Idea Owner"
-                value={ideaData.userName}
+                value={ideaData.ideaOwner}
               />
               <InfoRow
                 icon={Mail}
                 label="Contact Email"
-                value={ideaData.userEmail}
+                value={ideaData.contactEmail}
               />
               <InfoRow
                 icon={Tag}
@@ -132,15 +112,24 @@ const IdeaDetailsPage = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2">
-                  {ideaData.contributors.map((contributor, index) => (
-                    <div key={index} className="flex items-center space-x-2">
-                      <div className="w-8 h-8 rounded-full bg-blue-900 flex items-center justify-center">
-                        <span className="text-blue-100">{contributor[0]}</span>
+                <div className="space-y-3">
+                  {ideaData.contributors.length > 0 ? (
+                    ideaData.contributors.map((contributor, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-700 transition-colors"
+                      >
+                        <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
+                          <span className="text-sm font-medium text-white">
+                            {contributor.charAt(0).toUpperCase()}
+                          </span>
+                        </div>
+                        <span className="text-gray-200">{contributor}</span>
                       </div>
-                      <span className="text-gray-100">{contributor}</span>
-                    </div>
-                  ))}
+                    ))
+                  ) : (
+                    <p className="text-gray-400">No contributors added yet</p>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -155,14 +144,16 @@ const IdeaDetailsPage = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {ideaData.supportingDocuments.map((doc, index) => (
+                  {ideaData.supportingDocuments.map((url, index) => (
                     <div
                       key={index}
                       className="flex items-center justify-between p-3 rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors"
                     >
-                      <span className="text-gray-100">{doc.name}</span>
+                      <span className="text-gray-100">
+                        Document {index + 1}
+                      </span>
                       <a
-                        href={doc.url}
+                        href={url}
                         className="text-blue-400 hover:text-blue-300"
                         target="_blank"
                         rel="noopener noreferrer"

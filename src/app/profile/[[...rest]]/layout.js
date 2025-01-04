@@ -6,13 +6,13 @@ import {
   SidebarContent,
   SidebarProvider,
 } from "@/components/ui/sidebar";
-import IdeaSection from "@/components/sections/IdeaSection";
+
 import { Button } from "@/components/ui/button";
 import { PlusCircle, Home, Settings, HelpCircle, Menu } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-
-export default function HomePage() {
+import { UserProfile } from "@clerk/nextjs";
+export default function Profile() {
   return (
     <SidebarProvider>
       <div className="flex flex-col md:flex-row">
@@ -70,8 +70,8 @@ export default function HomePage() {
         </Sidebar>
       </div>
 
-      <section className=" ">
-        <IdeaSection />
+      <section className=" w-full relative flex flex-col px-4 md:px-0 py-8">
+        <UserProfile />
       </section>
     </SidebarProvider>
   );
