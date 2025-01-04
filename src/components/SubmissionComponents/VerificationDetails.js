@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";//importing the react hooks
+import { useDispatch, useSelector } from "react-redux";//importing the react-redux hooks to use the store
 import {
   updateField,
   addSupportingDocument,
@@ -122,13 +122,13 @@ export default function VerificationDetails({ nextStep, prevStep }) {
       <div className="flex justify-between">
         <button
           type="button"
-          onClick={prevStep}
+          onClick={prevStep}//button to take to the previous step
           className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
         >
           Previous
         </button>
         <button
-          type="submit"
+          type="submit"//the button type is submit
           className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
         >
           Next

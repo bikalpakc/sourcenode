@@ -1,9 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";//using react-redux
 import { updateField } from "@/store/formSlice";//importing the updateField from store
+
 export default function GoalsAndStage({ nextStep, prevStep }) {
-  
   const dispatch = useDispatch();
   const { expectedOutcome, currentStage } = useSelector((state) => state.form);
+
   const handleChange = (e) => {
     dispatch(updateField({ field: e.target.name, value: e.target.value }));
   };
