@@ -1,5 +1,5 @@
 "use client";
-import IdeasDashboard from "@/components/sections/Home";
+import IdeaSection from "@/components/sections/IdeaSection";
 export default function Home() {
-  return <IdeasDashboard />;
+  return <IdeaSection />;
 }

@@ -3,9 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   ideaOwner: "",
   contactEmail: "",
-  ideaName: "",
+  ideaTitle: "",
   ideaDescription: "",
-  category: "",
+  ideaCategory: "",
   proofOfConcept: "",
   supportingDocuments: [], // Array of { id, url, type, name }
   expectedOutcome: "",

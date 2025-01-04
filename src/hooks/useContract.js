@@ -119,19 +119,22 @@ export const useContract = () => {
 
         const contract = await getContract();
 
+        // Convert supporting documents to array of URLs
+        const supportingDocsUrls = formData.supportingDocuments.map(
+          (doc) => doc.url
+        );
+
         const tx = await contract.submitIdea(
           formData.ideaOwner,
           formData.contactEmail,
-          formData.ideaName,
+          formData.ideaTitle,
           formData.ideaDescription,
-          formData.category,
+          formData.ideaCategory,
           formData.proofOfConcept,
-          formData.supportingDocuments || [],
-          formData.expectedOutcome,
+          supportingDocsUrls,
           formData.currentStage,
           formData.contributors || []
         );
-
         // Wait for transaction confirmation and get the events
         const receipt = await tx.wait();
 

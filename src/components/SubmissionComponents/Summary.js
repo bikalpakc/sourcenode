@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";//using react-redux
-import { updateField } from "../../store/formSlice";//Import the action to update fields in the Redux store
- import { useContract } from "@/hooks/useContract";//costum hook is used here for submitting idea
+import { useSelector, useDispatch } from "react-redux"; //using react-redux
+import { updateField } from "../../store/formSlice"; //Import the action to update fields in the Redux store
+import { useContract } from "@/hooks/useContract"; //costum hook is used here for submitting idea
 export default function Summary({ prevStep }) {
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.form);
@@ -25,20 +25,20 @@ export default function Summary({ prevStep }) {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    submitIdea(formData);//Submit the form data using costumHook and you typically send the data to your backend
+    submitIdea(formData); //Submit the form data using costumHook and you typically send the data to your backend
   };
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-semibold">Summary</h2>
       <div className="space-y-4">
         <p>
-          <strong>Idea Name:</strong> {formData.ideaName}
+          <strong>Idea Name:</strong> {formData.ideaTitle}
         </p>
         <p>
           <strong>Idea Description:</strong> {formData.ideaDescription}
         </p>
         <p>
-          <strong>Category/Domain:</strong> {formData.category}
+          <strong>Category/Domain:</strong> {formData.ideaCategory}
         </p>
         <p>
           <strong>Proof of Concept:</strong> {formData.proofOfConcept}
@@ -50,7 +50,7 @@ export default function Summary({ prevStep }) {
             <div className="mt-2 grid gap-2">
               {formData.supportingDocuments.map((doc) => (
                 <div
-                  key={doc.id}//unique key for each documnet
+                  key={doc.id} //unique key for each documnet
                   className="flex items-center justify-between p-3 bg-gray-700 rounded-lg"
                 >
                   <div className="flex items-center space-x-3">
@@ -75,7 +75,7 @@ export default function Summary({ prevStep }) {
                     </div>
                   </div>
                   <a
-                    href={doc.url}//link to view the document
+                    href={doc.url} //link to view the document
                     target="_blank"
                     rel="noopener noreferrer"
                     className="px-3 py-1 text-sm text-blue-400 hover:text-blue-300"
@@ -105,7 +105,7 @@ export default function Summary({ prevStep }) {
               name="hasContributors"
               value="yes"
               checked={hasContributors}
-              onChange={handleContributorChange}//handle changes to radio button
+              onChange={handleContributorChange} //handle changes to radio button
               className="form-radio text-blue-600"
             />
             <span className="ml-2">Yes</span>
@@ -115,8 +115,8 @@ export default function Summary({ prevStep }) {
               type="radio"
               name="hasContributors"
               value="no"
-              checked={!hasContributors}//set to no if none is selected
-              onChange={handleContributorChange}//handle changes to radio button
+              checked={!hasContributors} //set to no if none is selected
+              onChange={handleContributorChange} //handle changes to radio button
               className="form-radio text-blue-600"
             />
             <span className="ml-2">No</span>
@@ -134,7 +134,7 @@ export default function Summary({ prevStep }) {
               className="flex-grow rounded-md bg-gray-700 border-gray-600 text-white"
             />
             <button
-              onClick={handleAddContributor}//add contributor when button is clicked
+              onClick={handleAddContributor} //add contributor when button is clicked
               className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
             >
               Add
@@ -152,13 +152,13 @@ export default function Summary({ prevStep }) {
       <div className="flex justify-between">
         <button
           type="button"
-          onClick={prevStep}//Go to the previous step on click
+          onClick={prevStep} //Go to the previous step on click
           className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
         >
           Previous
         </button>
         <button
-          onClick={handleSubmit}//submit the form on click
+          onClick={handleSubmit} //submit the form on click
           className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
         >
           Submit
